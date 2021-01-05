@@ -1,6 +1,6 @@
 # Warcraft 3 Map Project Seed With Lua
 
-A Wc3 map project seed using Lua scripting language that allows  code splitting and editing code while the editor is open.
+A Wc3 map project seed using Lua scripting language that allows code splitting and editing code while the World Editor is open.
 
 ## Features
 * Bundling and code splitting
@@ -9,13 +9,13 @@ A Wc3 map project seed using Lua scripting language that allows  code splitting 
 * Bundle contents of the `src/` folder and inject them in the `map.w3x/war3map.lua` file enables editing the map using the World Editor) whilist editing lua with code editors (e.g. [VSCode](https://code.visualstudio.com)) without having to neither copy/paste code in the editor nor create a clone project. See [Caveats](#caveats)
 * Soft minification (trim all lines, remove empty lines and comment only lines)
 * File final bundle size check (max: 100KB)
-----------------
+
 ## Instalation
 * Install [Node.js](https://nodejs.org/en/download/)
-* Clone or download this repository
+* Clone or download this repository, or click `Use Template`
 * run `npm install` inside the directory
 * Put your map in `map.w3x/` directory (already comes with an example map)
-----------------
+
 ## Usage
 ### Development
 * run `npm start` to bundle and watch for changes
@@ -23,12 +23,12 @@ A Wc3 map project seed using Lua scripting language that allows  code splitting 
 ### Release
 * run `npm run bundle.prod` to bundle with soft code minification enabled
 * run `npm run watch.prod` to watch for changles  with soft code minification enabled
-----------------
+
 ## Caveats
 
 * Unsaved changes in the World Editor cause it to create and run a temporary map TestMap. Sinde the path to TestMap is not known, it's not injected with lua bundle. Workaround: If you change anything in the World Editor (an asterisk appears on the World Editor window label `map.w3x*`), then you need to first SAVE and wait for change detection + compilation (~ 1 second) to test the map.
 * Files not required by the `src/main.lua` (`__root`) module or it's submodules are not included in the bundle, thus not acessible anywhere
-----------------
+
 ## Enhancements to consider:
 * Use lua [Global Initialization](https://www.hiveworkshop.com/threads/lua-global-initialization.317099/) instead of hooks
 * Fix TestMap caveat
