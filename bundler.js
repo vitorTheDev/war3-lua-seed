@@ -4,22 +4,20 @@ console.time('bundling');
 const isProduction = ((process.env.BUNDLING_ENV || '').trim() == 'release');
 console.log(`bundling mode: ${isProduction ? 'release' : 'debug'}`)
 
-import * as fs from 'fs';
-import * as path from 'path';
-import glob from 'glob';
-import luabundle from 'luabundle';
+const fs = require('fs');// import * as fs from 'fs';
+const path = require('path');// import * as path from 'path';
+const glob = require('glob');// import glob from 'glob';
+const luabundle = require('luabundle');// import luabundle from 'luabundle';
 
 const dirs = glob.sync('src/**/*.lua').map(luaFile => path.dirname(luaFile) + '/?.lua');
-const dirsSet = new Set(dirs);
-const paths = Array.from(dirsSet);
+const paths = Array.from(new Set(dirs));
 const bundleScript = luabundle.bundle('./src/main.lua', {
   force: process.env.LUABUNDLE_FORCE !== false,
   luaVersion: process.env.LUABUNDLE_LUAVERSION || '5.3',
   isolate: process.env.LUABUNDLE_LUAVERSION !== false,
   metadata: (!!process.env.LUABUNDLE_METADATA) || (!isProduction),
   paths,
-  output: './dist/bundle.lua'
-})
+});
 
 const mapScriptFile = './map.w3x/war3map.lua';
 const mapScript = fs.readFileSync(mapScriptFile, { encoding: 'utf-8' });

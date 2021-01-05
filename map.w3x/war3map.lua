@@ -1,93 +1,139 @@
 --__inline_bundle__
 --__inline_begin__
 function loadBundle()
-local __bundle_require, __bundle_loaded, __bundle_register, __bundle_modules = (function(superRequire)
-local loadingPlaceholder = {[{}] = true}
-local register
-local modules = {}
-local require
-local loaded = {}
-register = function(name, body)
-if not modules[name] then
-modules[name] = body
-end
-end
-require = function(name)
-local loadedModule = loaded[name]
-if loadedModule then
-if loadedModule == loadingPlaceholder then
-return nil
-end
-else
-if not modules[name] then
-if not superRequire then
-local identifier = type(name) == 'string' and '\"' .. name .. '\"' or tostring(name)
-error('Tried to require ' .. identifier .. ', but no such module has been registered')
-else
-return superRequire(name)
-end
-end
-loaded[name] = loadingPlaceholder
-loadedModule = modules[name](require, loaded, register, modules)
-loaded[name] = loadedModule
-end
-return loadedModule
-end
-return require, loaded, register, modules
-end)(nil)
-__bundle_register("__root", function(require, _LOADED, __bundle_register, __bundle_modules)
-require("reporter");
-require("luabundle");
-require("global");
-local githubTrigger = require("githubTrigger");
-function mainPostHook()
-githubTrigger()
-end
-return require
-end)
-__bundle_register("githubTrigger", function(require, _LOADED, __bundle_register, __bundle_modules)
-local function registerTrigger()
-local trigger = CreateTrigger()
-TriggerAddAction(trigger, function()
-TriggerSleepAction(5.00)
-local github = require("github")
-github()
-TriggerSleepAction(1.00)
-local luabundle = require("luabundle")
-luabundle()
-end)
-ConditionalTriggerExecute(trigger)
-return trigger
-end
-return registerTrigger
-end)
-__bundle_register("luabundle", function(require, _LOADED, __bundle_register, __bundle_modules)
-local function luabundle()
-print("Give a star: https://github.com/Benjamin-Dobell/luabundle !")
-end
-return luabundle
-end)
-__bundle_register("github", function(require, _LOADED, __bundle_register, __bundle_modules)
-local function github()
-print("war3-lua-seed LINK")
-end
-return github
-end)
-__bundle_register("global", function(require, _LOADED, __bundle_register, __bundle_modules)
-function GlobalHello()
-print("hello from global context!")
-end
-return
-end)
-__bundle_register("reporter", function(require, _LOADED, __bundle_register, __bundle_modules)
-local function reporter()
-print("Ouch! That really hurts!")
-end
-return reporter
-end)
-return __bundle_require("__root")
-end
-require = loadBundle()
+        -- Bundled by luabundle {"version":"1.6.0"}
+    local __bundle_require, __bundle_loaded, __bundle_register, __bundle_modules = (function(superRequire)
+    	local loadingPlaceholder = {[{}] = true}
+    
+
+    	local register
+    	local modules = {}
+    
+
+    	local require
+    	local loaded = {}
+    
+
+    	register = function(name, body)
+    		if not modules[name] then
+    			modules[name] = body
+    		end
+    	end
+    
+
+    	require = function(name)
+    		local loadedModule = loaded[name]
+    
+
+    		if loadedModule then
+    			if loadedModule == loadingPlaceholder then
+    				return nil
+    			end
+    		else
+    			if not modules[name] then
+    				if not superRequire then
+    					local identifier = type(name) == 'string' and '\"' .. name .. '\"' or tostring(name)
+    					error('Tried to require ' .. identifier .. ', but no such module has been registered')
+    				else
+    					return superRequire(name)
+    				end
+    			end
+    
+
+    			loaded[name] = loadingPlaceholder
+    			loadedModule = modules[name](require, loaded, register, modules)
+    			loaded[name] = loadedModule
+    		end
+    
+
+    		return loadedModule
+    	end
+    
+
+    	return require, loaded, register, modules
+    end)(nil)
+    __bundle_register("__root", function(require, _LOADED, __bundle_register, __bundle_modules)
+    -- ? modules not required in main or any file required by main (__root module or submodules) are not included in the bundle
+    require("reporter");
+    require("luabundle");
+    require("global");
+    local githubTrigger = require("githubTrigger");
+    
+
+    -- function mainPreHook()
+    -- end
+    function mainPostHook()
+      githubTrigger()
+    end
+    
+
+    -- function configPreHook()
+    -- end
+    -- function configPostHook()
+    -- end
+    
+
+    -- ? if you don't return require, it won't be acessible outside bundle
+    return require
+    
+
+    end)
+    __bundle_register("githubTrigger", function(require, _LOADED, __bundle_register, __bundle_modules)
+    local function registerTrigger()
+      local trigger = CreateTrigger()
+      TriggerAddAction(trigger, function()
+        TriggerSleepAction(5.00)
+        local github = require("github")
+        github()
+        TriggerSleepAction(1.00)
+        local luabundle = require("luabundle")
+        luabundle()
+      end)
+      --? run after initialization
+      ConditionalTriggerExecute(trigger)
+      return trigger
+    end
+    
+
+    return registerTrigger
+    
+
+    end)
+    __bundle_register("luabundle", function(require, _LOADED, __bundle_register, __bundle_modules)
+    local function luabundle()
+      print("Give a star: https://github.com/Benjamin-Dobell/luabundle !")
+    end
+    
+
+    return luabundle
+    end)
+    __bundle_register("github", function(require, _LOADED, __bundle_register, __bundle_modules)
+    local function github()
+      print("war3-lua-seed LINK")
+    end
+    
+
+    return github
+    end)
+    __bundle_register("global", function(require, _LOADED, __bundle_register, __bundle_modules)
+    function GlobalHello()
+      print("hello from global context!")
+    end
+    
+
+    return
+    end)
+    __bundle_register("reporter", function(require, _LOADED, __bundle_register, __bundle_modules)
+    local function reporter()
+      print("Ouch! That really hurts!")
+    end
+    
+
+    return reporter
+    end)
+    return __bundle_require("__root")
+      end
+      require = loadBundle()
 --__inline_end__
 gg_trg_fileNotIncluded = nil
 gg_trg_require = nil

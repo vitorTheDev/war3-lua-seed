@@ -1,10 +1,10 @@
 {
   "name": "wc3-lua-seed",
   "version": "1.0.0",
-  "description": "",
-  "main": "bundler.mjs",
+  "description": "Warcraft 3 + lua scripting map seed",
+  "main": "bundler.js",
   "scripts": {
-    "bundle": "node bundler.mjs",
+    "bundle": "node bundler.js",
     "bundle.prod": "set BUNDLING_ENV=release && npm run bundle",
     "watch": "nodemon nodemon.json",
     "watch.prod": "set BUNDLING_ENV=release && npm run watch"
