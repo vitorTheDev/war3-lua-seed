@@ -1,6 +1,11 @@
-# Warcraft 3 Map Project Seed With Lua
+# 🌑 Warcraft 3 Map Project Seed With Lua
 
-A Wc3 map project seed using Lua scripting language that allows code splitting and editing code while the World Editor is open.
+A Wc3 map project template using Lua scripting language that allows code splitting and editing code while the World Editor is open.
+
+* [Features](#features)
+* [Instalation](#Instalation)
+* [Usage](#Usage)
+* [Caveats](#caveats)
 
 ## Features
 * Bundling and code splitting
@@ -31,6 +36,7 @@ A Wc3 map project seed using Lua scripting language that allows code splitting a
 
 ## Enhancements to consider:
 * Use lua [Global Initialization](https://www.hiveworkshop.com/threads/lua-global-initialization.317099/) instead of hooks
+* Make into npm package
 * Fix TestMap caveat
 * Make it easier to include external lua libraries
 * Typescript to lua

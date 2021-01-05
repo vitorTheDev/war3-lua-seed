@@ -8,7 +8,6 @@ local function registerTrigger()
     local luabundle = require("luabundle")
     luabundle()
   end)
-  --? run after initialization
   ConditionalTriggerExecute(trigger)
   return trigger
 end
