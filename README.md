@@ -3,7 +3,7 @@
 A Wc3 map project template using Lua scripting language that allows code splitting and editing code while the World Editor is open.
 
 * [Features](#features)
-* [Instalation](#Instalation)
+* [Installation](#Installation)
 * [Usage](#Usage)
 * [Caveats](#caveats)
 
@@ -15,7 +15,7 @@ A Wc3 map project template using Lua scripting language that allows code splitti
 * Soft minification (trim all lines, remove empty lines and comment only lines)
 * File final bundle size check (max: 100KB)
 
-## Instalation
+## Installation
 * Install [Node.js](https://nodejs.org/en/download/)
 * Clone or download this repository, or click `Use Template`
 * run `npm install` inside the directory
@@ -27,7 +27,7 @@ A Wc3 map project template using Lua scripting language that allows code splitti
 * run `npm run bundle` to bundle only
 ### Release
 * run `npm run bundle.prod` to bundle with soft code minification enabled
-* run `npm run watch.prod` to watch for changles  with soft code minification enabled
+* run `npm run watch.prod` to watch for changes  with soft code minification enabled
 
 ## Caveats
 
