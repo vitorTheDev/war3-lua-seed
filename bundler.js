@@ -4,10 +4,10 @@ console.time('bundling');
 const isProduction = ((process.env.BUNDLING_ENV || '').trim() == 'release');
 console.log(`bundling mode: ${isProduction ? 'release' : 'debug'}`)
 
-const fs = require('fs');// import * as fs from 'fs';
-const path = require('path');// import * as path from 'path';
-const glob = require('glob');// import glob from 'glob';
-const luabundle = require('luabundle');// import luabundle from 'luabundle';
+const fs = require('fs'); // ? .mjs/.ts => import * as fs from 'fs';
+const path = require('path'); // ? .mjs/.ts => import * as path from 'path';
+const glob = require('glob'); // ? .mjs/.ts => import glob from 'glob';
+const luabundle = require('luabundle'); // ? mjs/ts => import luabundle from 'luabundle';
 
 const dirs = glob.sync('src/**/*.lua').map(luaFile => path.dirname(luaFile) + '/?.lua');
 const paths = Array.from(new Set(dirs));
@@ -38,11 +38,6 @@ function prepareScript(script) {
       if (!isProduction) { return true; }
       const isComment = l.startsWith('--');
       const isIdentifier = Object.values(identifiers).includes(l.trim());
-      // console.log(
-      //   'isComment', isComment,
-      //   'isIdentifier', isIdentifier,
-      //   l,
-      // );
       return isIdentifier || !isComment;
     })
     .map(l => (!!l.trim())
