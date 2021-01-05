@@ -1,13 +1,15 @@
-console.log(`bundling started: ${new Date().toLocaleString()}`);
-console.time('bundling');
+'use strict';
 
-const isProduction = ((process.env.BUNDLING_ENV || '').trim() == 'release');
-console.log(`bundling mode: ${isProduction ? 'release' : 'debug'}`)
+console.time('bundling');
 
 const fs = require('fs'); // ? .mjs/.ts => import * as fs from 'fs';
 const path = require('path'); // ? .mjs/.ts => import * as path from 'path';
 const glob = require('glob'); // ? .mjs/.ts => import glob from 'glob';
-const luabundle = require('luabundle'); // ? mjs/ts => import luabundle from 'luabundle';
+const luabundle = require('luabundle'); // ? .mjs/.ts => import luabundle from 'luabundle';
+
+console.log(`bundling started: ${new Date().toLocaleString()}`);
+const isProduction = ((process.env.BUNDLING_ENV || '').trim() == 'release');
+console.log(`bundling mode: ${isProduction ? 'release' : 'debug'}`)
 
 const dirs = glob.sync('src/**/*.lua').map(luaFile => path.dirname(luaFile) + '/?.lua');
 const paths = Array.from(new Set(dirs));
@@ -108,6 +110,8 @@ fs.writeFileSync(mapScriptFile, finalMapScript, { encoding: 'utf-8' });
 
 const stats = fs.statSync(mapScriptFile);
 const sizeInKB = stats.size / 1024;
+// disclaimer: the perf below does NOT account for:
+// map save time, file change detection, nodemon.json->delay or node.js startup time
 console.timeEnd('bundling');
 console.log(`bundling sucessful: ${new Date().toLocaleString()}`);
 console.log(`war3map.lua: ${sizeInKB.toFixed(2)}KB`);

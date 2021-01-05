@@ -89,7 +89,6 @@ function loadBundle()
         local luabundle = require("luabundle")
         luabundle()
       end)
-      --? run after initialization
       ConditionalTriggerExecute(trigger)
       return trigger
     end
@@ -109,7 +108,7 @@ function loadBundle()
     end)
     __bundle_register("github", function(require, _LOADED, __bundle_register, __bundle_modules)
     local function github()
-      print("war3-lua-seed LINK")
+      print("war3-lua-seed https://github.com/netd777/war3-lua-seed")
     end
     
 

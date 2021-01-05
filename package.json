@@ -13,9 +13,11 @@
   "keywords": [],
   "author": "Vitor B. B.",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "glob": "^7.1.6",
-    "luabundle": "^1.6.0",
+    "luabundle": "^1.6.0"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.6"
   }
 }

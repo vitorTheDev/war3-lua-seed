@@ -36,7 +36,7 @@ A Wc3 map project template using Lua scripting language that allows code splitti
 * Map bundle injection or loading may fail if:
   * **Run Map immediatly after save**: World Editor saving takes a small amount of time, and change detection / bundling also has a small execution time. So if you test the map before bundling is done it won't work. Wait 2-5 seconds after save or wait for the `bundling complete` message in the console
   * **TestMap used istead of `map.w3x/`**: Unsaved changes in the World Editor cause it to create and run a temporary map TestMap. Since the path to TestMap is not known, it's not injected with lua bundle. Workaround: If you change anything in the World Editor (an asterisk appears on the World Editor window label `map.w3x*`), then you need to first SAVE and wait for change detection + compilation (~ 1 second) to test the map
-  * **Map save detection fails**: watcher (nodemon) not runnig / watcher didn't wait before map save was complete (thus bundle was overwritten)
+  * **Map save detection fails**: watcher not runnig / watcher didn't wait before map save was complete (thus bundle was overwritten)
   * **Write was denied**: `map.w3x/war3map.lua` file is in use by another process or has read only permissions
 * Files not required by the `src/main.lua` (`__root`) module or it's submodules are not included in the bundle, thus not acessible anywhere
 
