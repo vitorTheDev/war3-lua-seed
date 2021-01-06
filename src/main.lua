@@ -3,11 +3,16 @@ require("reporter");
 require("luabundle");
 require("global");
 local githubTrigger = require("githubTrigger");
+local reporterTrigger = require("reporterTrigger");
+
+-- ? load external lib
+-- require("damage-engine");
 
 -- function mainPreHook()
 -- end
 function mainPostHook()
   githubTrigger()
+  reporterTrigger()
 end
 
 -- function configPreHook()

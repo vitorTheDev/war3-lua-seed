@@ -58,12 +58,18 @@ function loadBundle()
     require("luabundle");
     require("global");
     local githubTrigger = require("githubTrigger");
+    local reporterTrigger = require("reporterTrigger");
+    
+
+    -- ? load external lib
+    -- require("damage-engine");
     
 
     -- function mainPreHook()
     -- end
     function mainPostHook()
       githubTrigger()
+      reporterTrigger()
     end
     
 
@@ -78,6 +84,25 @@ function loadBundle()
     
 
     end)
+    __bundle_register("reporterTrigger", function(require, _LOADED, __bundle_register, __bundle_modules)
+    local function registerTrigger()
+      local trigger = CreateTrigger()
+      local mapArea = GetPlayableMapRect()
+      local group = GetUnitsInRectOfPlayer(mapArea, Player(1))
+      local unit = FirstOfGroup(group)
+      DestroyGroup(group)
+      TriggerRegisterUnitEvent(trigger, unit, EVENT_UNIT_DAMAGED)
+      TriggerAddAction(trigger, function()
+        print('Oof!')
+      end)
+      return trigger
+    end
+    
+
+    return registerTrigger
+    
+
+    end)
     __bundle_register("githubTrigger", function(require, _LOADED, __bundle_register, __bundle_modules)
     local function registerTrigger()
       local trigger = CreateTrigger()
@@ -89,7 +114,7 @@ function loadBundle()
         local luabundle = require("luabundle")
         luabundle()
       end)
-      ConditionalTriggerExecute(trigger)
+      TriggerExecute(trigger)
       return trigger
     end
     
@@ -124,7 +149,7 @@ function loadBundle()
     end)
     __bundle_register("reporter", function(require, _LOADED, __bundle_register, __bundle_modules)
     local function reporter()
-      print("Ouch! That really hurts!")
+      print("Ouch!")
     end
     
 
@@ -139,6 +164,7 @@ gg_trg_require = nil
 gg_trg_global = nil
 gg_trg_fileNotIncluded = nil
 gg_unit_Edem_0004 = nil
+gg_unit_Obla_0002 = nil
 function InitGlobals()
 end
 
@@ -303,3 +329,21 @@ function config()
     InitGenericPlayerSlots()
 end
 
+
+--__inline_hooks__
+--__inline_begin__
+mapMain = main
+        main = function()
+          if (loadBundle == nil) then print("ERROR: bundle loader not found!") end
+          if (require == nil) then print("ERROR: require not found!") end
+          if mainPreHook ~= nil then runMapMain = mainPreHook() end
+          if runMapMain ~= false then mapMain() end
+          if mainPostHook ~= nil then mainPostHook() end
+        end
+        mapConfig = config
+        config = function()
+          if configPreHook ~= nil then runMapConfig = configPreHook() end
+          if runMapConfig ~= false then mapConfig() end
+          if configPostHook ~= nil then configPostHook() end
+        end
+--__inline_end__

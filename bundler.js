@@ -11,7 +11,19 @@ console.log(`bundling started: ${new Date().toLocaleString()}`);
 const isProduction = ((process.env.BUNDLING_ENV || '').trim() == 'release');
 console.log(`bundling mode: ${isProduction ? 'release' : 'debug'}`)
 
-const dirs = glob.sync('src/**/*.lua').map(luaFile => path.dirname(luaFile) + '/?.lua');
+let globs;
+try {
+  globs = (!!process.env.BUNDLING_GLOBS) ? JSON.parse(process.env.BUNDLING_GLOBS) : null;
+  if (typeof globs === 'string') {
+    globs = [globs];
+  }
+}
+catch (e) {
+  globs = null;
+}
+const dirs = (globs || ['src/**/*.lua', 'lib/**/*.lua'])
+  .map(gl => glob.sync(gl).map(luaFile => path.dirname(luaFile) + '/?.lua'))
+  .reduce((prev, curr) => prev.concat(curr), []);
 const paths = Array.from(new Set(dirs));
 const bundleScript = luabundle.bundle('./src/main.lua', {
   force: process.env.LUABUNDLE_FORCE !== false,
@@ -82,7 +94,7 @@ const bundledMapScript = positions.file.found
 
 let finalMapScript = bundledMapScript;
 // todo: use Lua Initialization? https://www.hiveworkshop.com/threads/lua-global-initialization.317099/
-if (process.env.HOOKS_ALL) {
+if (process.env.HOOKS_ALL !== false) {
   const hooksScript =
     `mapMain = main
     main = function()

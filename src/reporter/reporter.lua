@@ -1,5 +1,5 @@
 local function reporter()
-  print("Ouch! That really hurts!")
+  print("Ouch!")
 end
 
 return reporter
