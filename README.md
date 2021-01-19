@@ -41,9 +41,15 @@ A Wc3 map project template using Lua scripting language that allows code splitti
 * Files not required by the `src/main.lua` (`__root`) module or it's submodules are not included in the bundle, thus not acessible anywhere (including external libs at `lib/`)
 
 ## Enhancements to consider:
+* Minify bundle:
+  * Remove comments [strip-comments](https://www.npmjs.com/package/strip-comments)
+  * Minify: lLuamin](https://www.npmjs.com/package/strip-comments)
 * Use lua [Global Initialization](https://www.hiveworkshop.com/threads/lua-global-initialization.317099/) instead of hooks
 * `.env` or equivalent
 * Make into npm package
 * Fix TestMap caveat
-* Make it easier to include external lua libraries
-* Typescript to lua
+* Make it easier to include external Lua libraries
+  * [LuaRocks](https://luarocks.org)
+  * [lua-loader](https://www.npmjs.com/package/lua-loader)
+* [Typescript to Lua](https://www.npmjs.com/package/typescript-to-lua)
+* [Moonscript](https://moonscript.org)
