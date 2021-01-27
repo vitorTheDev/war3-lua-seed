@@ -2,13 +2,17 @@
 
 console.time('bundling');
 
-const fs = require('fs'); // ? .mjs/.ts => import * as fs from 'fs';
-const path = require('path'); // ? .mjs/.ts => import * as path from 'path';
-const glob = require('glob'); // ? .mjs/.ts => import glob from 'glob';
-const luabundle = require('luabundle'); // ? .mjs/.ts => import luabundle from 'luabundle';
+const fs = require('fs');
+const path = require('path');
+const glob = require('glob');
+const luabundle = require('luabundle');
+const luamin = require('luamin');
 
 console.log(`bundling started: ${new Date().toLocaleString()}`);
 const isProduction = ((process.env.BUNDLING_ENV || '').trim() == 'release');
+const minifyModules = !!process.env.MINIFY_MODULES;
+const minifyBundle = process.env.MINIFY_BUNDLE !== false;
+
 console.log(`bundling mode: ${isProduction ? 'release' : 'debug'}`)
 
 let globs;
@@ -28,7 +32,12 @@ const paths = Array.from(new Set(dirs));
 const bundleScript = luabundle.bundle('./src/main.lua', {
   force: process.env.LUABUNDLE_FORCE !== false,
   luaVersion: process.env.LUABUNDLE_LUAVERSION || '5.3',
-  isolate: process.env.LUABUNDLE_LUAVERSION !== false,
+  isolate: process.env.LUABUNDLE_ISOLATE !== false,
+  preprocess: (module, options) => {
+    return (minifyModules && isProduction)
+      ? luamin.minify(module.content)
+      : module.content;
+  },
   metadata: (!!process.env.LUABUNDLE_METADATA) || (!isProduction),
   paths,
 });
@@ -37,30 +46,16 @@ const mapScriptFile = './map.w3x/war3map.lua';
 const mapScript = fs.readFileSync(mapScriptFile, { encoding: 'utf-8' });
 
 const identifiers = {
-  file: '--__inline_bundle__',
-  hooks: '--__inline_hooks__',
-  begin: '--__inline_begin__',
-  end: '--__inline_end__',
+  file: '--!__inline_bundle__',
+  hooks: '--!__inline_hooks__',
+  begin: '--!__inline_begin__',
+  end: '--!__inline_end__',
 };
 
 function prepareScript(script) {
-  return script.split('\n')
-    .map(l => isProduction
-      ? l.trim()
-      : l)
-    .filter(l => {
-      if (!isProduction) { return true; }
-      const isComment = l.startsWith('--');
-      const isIdentifier = Object.values(identifiers).includes(l.trim());
-      return isIdentifier || !isComment;
-    })
-    .map(l => (!!l.trim())
-      ? l
-      : (isProduction ? null : '\n'))
-    .filter(l => l !== null)
-    .join(isProduction
-      ? '\n'
-      : '\n    ');
+  return (isProduction)
+    ? luamin.minify(script)
+    : script;
 }
 
 let clearMapScript = mapScript;
@@ -77,16 +72,16 @@ do {
   clearMapScript = clearMapScript.replace(oldScript, '');
 } while (positions.begin.found && positions.end.found);
 
-clearMapScript = isProduction ? prepareScript(clearMapScript) : clearMapScript;
-// console.log(clearMapScript);
-
 const wrappedBundle =
   `${process.env.BUNDLE_WRAP !== false ? 'function loadBundle()' : ''}
-    ${bundleScript}
+  ${bundleScript}
   ${process.env.BUNDLE_WRAP !== false ? 'end' : ''}
   ${process.env.BUNDLE_REQUIRE !== false ? 'require = loadBundle()' : ''}`;
 const preparedScript =
-  `${identifiers.file}\n${identifiers.begin}\n${prepareScript(wrappedBundle)}\n${identifiers.end}`;
+  `${identifiers.file}\n${identifiers.begin}\n${(minifyBundle && isProduction)
+    ? prepareScript(wrappedBundle)
+    : wrappedBundle
+  }\n${identifiers.end}`;
 const bundledMapScript = positions.file.found
   ? clearMapScript.replace(identifiers.file, preparedScript)
   : `${preparedScript}\n${clearMapScript}`;
@@ -116,6 +111,9 @@ if (process.env.HOOKS_ALL !== false) {
     ? bundledMapScript.replace(identifiers.hooks, preparedHooksScript)
     : `${bundledMapScript}\n${preparedHooksScript}`;
   finalMapScript = hookedMapScript;
+}
+if (process.env.MINIFY_MAP_SOURCE === true) {
+  finalMapScript = prepareScript(finalMapScript);
 }
 
 fs.writeFileSync(mapScriptFile, finalMapScript, { encoding: 'utf-8' });

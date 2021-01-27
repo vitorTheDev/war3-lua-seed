@@ -9,12 +9,12 @@ A Wc3 map project template using Lua scripting language that allows code splitti
 
 ## Features
 * Bundling and code splitting
-(via [luabundle](https://github.com/Benjamin-Dobell/luabundle))
+(via [Luabundle](https://github.com/Benjamin-Dobell/luabundle))
 * File watcher (via [nodemon](https://github.com/remy/nodemon))
 * Bundle contents of the `src/` (and `lib/` for external libraries like ) folder and inject them in the `map.w3x/war3map.lua` file
   * Thus enabling editing the map using the World Editor whilist editing lua with code editors like  [VSCode](https://code.visualstudio.com) without having to neither copy/paste code in the editor nor create a clone project
   * See [Caveats](#caveats)
-* Soft minification (trim all lines, remove empty lines and comment only lines)
+* Code minification using [Luamin](https://www.npmjs.com/package/luamin)
 * File final bundle size check (max: 100KB)
 
 ## Installation
@@ -27,9 +27,9 @@ A Wc3 map project template using Lua scripting language that allows code splitti
 ### Development
 * run `npm start` to bundle and watch for changes
 * run `npm run bundle` to bundle only
-### Release
-* run `npm run bundle.prod` to bundle with soft code minification enabled
-* run `npm run watch.prod` to watch for changes  with soft code minification enabled
+### Production
+* run `npm run bundle.prod` to watch for changes with minification enabled
+* run `npm run watch.prod` to watch for changes with minification enabled
 
 ## Caveats
 
@@ -41,15 +41,19 @@ A Wc3 map project template using Lua scripting language that allows code splitti
 * Files not required by the `src/main.lua` (`__root`) module or it's submodules are not included in the bundle, thus not acessible anywhere (including external libs at `lib/`)
 
 ## Enhancements to consider:
-* Minify bundle:
-  * Remove comments [strip-comments](https://www.npmjs.com/package/strip-comments)
-  * Minify: lLuamin](https://www.npmjs.com/package/strip-comments)
+* Map source backup option
 * Use lua [Global Initialization](https://www.hiveworkshop.com/threads/lua-global-initialization.317099/) instead of hooks
 * `.env` or equivalent
-* Make into npm package
 * Fix TestMap caveat
 * Make it easier to include external Lua libraries
   * [LuaRocks](https://luarocks.org)
   * [lua-loader](https://www.npmjs.com/package/lua-loader)
 * [Typescript to Lua](https://www.npmjs.com/package/typescript-to-lua)
-* [Moonscript](https://moonscript.org)
+* [Moonscript](https://moonscript.org) (luarocks?)
+* Make into npm package
+* Create `release` mode that minifies the map completely (smaller), but that is "destructive", and should either instead create a new file in a `/dist` folder,create a backup file or just warn prior to compilation
+
+
+----
+## License
+MIT

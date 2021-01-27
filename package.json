@@ -1,6 +1,6 @@
 {
   "name": "wc3-lua-seed",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "Warcraft 3 + lua scripting map seed",
   "main": "bundler.js",
   "scripts": {
@@ -15,7 +15,9 @@
   "license": "MIT",
   "dependencies": {
     "glob": "^7.1.6",
-    "luabundle": "^1.6.0"
+    "luabundle": "^1.6.0",
+    "luamin": "^1.0.4",
+    "strip-comments": "^2.0.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"

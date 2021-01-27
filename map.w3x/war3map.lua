@@ -1,170 +1,13 @@
---__inline_bundle__
---__inline_begin__
-function loadBundle()
-        -- Bundled by luabundle {"version":"1.6.0"}
-    local __bundle_require, __bundle_loaded, __bundle_register, __bundle_modules = (function(superRequire)
-    	local loadingPlaceholder = {[{}] = true}
-    
+--!__inline_bundle__
+--!__inline_begin__
+function loadBundle()local a,b,c,d=(function(e)local f={[{}]=true}local g;local h={}local require;local i={}g=function(j,k)if not h[j]then h[j]=k end end;require=function(j)local l=i[j]if l then if l==f then return nil end else if not h[j]then if not e then local m=type(j)=='string'and'\"'..j..'\"'or tostring(j)error('Tried to require '..m..', but no such module has been registered')else return e(j)end end;i[j]=f;l=h[j](require,i,g,h)i[j]=l end;return l end;return require,i,g,h end)(nil)c("__root",function(require,n,c,d)require("reporter")require("luabundle")require("global")local o=require("githubTrigger")local p=require("reporterTrigger")function mainPostHook()o()p()end;return require end)c("reporterTrigger",function(require,n,c,d)local function q()local r=CreateTrigger()local s=GetPlayableMapRect()local t=GetUnitsInRectOfPlayer(s,Player(1))local u=FirstOfGroup(t)DestroyGroup(t)TriggerRegisterUnitEvent(r,u,EVENT_UNIT_DAMAGED)TriggerAddAction(r,function()print('Oof!')end)return r end;return q end)c("githubTrigger",function(require,n,c,d)local function q()local r=CreateTrigger()TriggerAddAction(r,function()TriggerSleepAction(5.00)local v=require("github")v()TriggerSleepAction(1.00)local w=require("luabundle")w()TriggerSleepAction(1.00)local x=require("luamin")x()end)TriggerExecute(r)return r end;return q end)c("luamin",function(require,n,c,d)local function w()print("Give a star: https://github.com/mathiasbynens/luamin !")end;return w end)c("luabundle",function(require,n,c,d)local function w()print("Give a star: https://github.com/Benjamin-Dobell/luabundle !")end;return w end)c("github",function(require,n,c,d)local function v()print("war3-lua-seed https://github.com/netd777/war3-lua-seed")end;return v end)c("global",function(require,n,c,d)function GlobalHello()print("hello from global context!")end;return end)c("reporter",function(require,n,c,d)local function y()print("Ouch!")end;return y end)return a("__root")end;require=loadBundle()
+--!__inline_end__
 
-    	local register
-    	local modules = {}
-    
-
-    	local require
-    	local loaded = {}
-    
-
-    	register = function(name, body)
-    		if not modules[name] then
-    			modules[name] = body
-    		end
-    	end
-    
-
-    	require = function(name)
-    		local loadedModule = loaded[name]
-    
-
-    		if loadedModule then
-    			if loadedModule == loadingPlaceholder then
-    				return nil
-    			end
-    		else
-    			if not modules[name] then
-    				if not superRequire then
-    					local identifier = type(name) == 'string' and '\"' .. name .. '\"' or tostring(name)
-    					error('Tried to require ' .. identifier .. ', but no such module has been registered')
-    				else
-    					return superRequire(name)
-    				end
-    			end
-    
-
-    			loaded[name] = loadingPlaceholder
-    			loadedModule = modules[name](require, loaded, register, modules)
-    			loaded[name] = loadedModule
-    		end
-    
-
-    		return loadedModule
-    	end
-    
-
-    	return require, loaded, register, modules
-    end)(nil)
-    __bundle_register("__root", function(require, _LOADED, __bundle_register, __bundle_modules)
-    -- ? modules not required in main or any file required by main (__root module or submodules) are not included in the bundle
-    require("reporter");
-    require("luabundle");
-    require("global");
-    local githubTrigger = require("githubTrigger");
-    local reporterTrigger = require("reporterTrigger");
-    
-
-    -- ? load external lib
-    -- require("damage-engine");
-    
-
-    -- function mainPreHook()
-    -- end
-    function mainPostHook()
-      githubTrigger()
-      reporterTrigger()
-    end
-    
-
-    -- function configPreHook()
-    -- end
-    -- function configPostHook()
-    -- end
-    
-
-    -- ? if you don't return require, it won't be acessible outside bundle
-    return require
-    
-
-    end)
-    __bundle_register("reporterTrigger", function(require, _LOADED, __bundle_register, __bundle_modules)
-    local function registerTrigger()
-      local trigger = CreateTrigger()
-      local mapArea = GetPlayableMapRect()
-      local group = GetUnitsInRectOfPlayer(mapArea, Player(1))
-      local unit = FirstOfGroup(group)
-      DestroyGroup(group)
-      TriggerRegisterUnitEvent(trigger, unit, EVENT_UNIT_DAMAGED)
-      TriggerAddAction(trigger, function()
-        print('Oof!')
-      end)
-      return trigger
-    end
-    
-
-    return registerTrigger
-    
-
-    end)
-    __bundle_register("githubTrigger", function(require, _LOADED, __bundle_register, __bundle_modules)
-    local function registerTrigger()
-      local trigger = CreateTrigger()
-      TriggerAddAction(trigger, function()
-        TriggerSleepAction(5.00)
-        local github = require("github")
-        github()
-        TriggerSleepAction(1.00)
-        local luabundle = require("luabundle")
-        luabundle()
-      end)
-      TriggerExecute(trigger)
-      return trigger
-    end
-    
-
-    return registerTrigger
-    
-
-    end)
-    __bundle_register("luabundle", function(require, _LOADED, __bundle_register, __bundle_modules)
-    local function luabundle()
-      print("Give a star: https://github.com/Benjamin-Dobell/luabundle !")
-    end
-    
-
-    return luabundle
-    end)
-    __bundle_register("github", function(require, _LOADED, __bundle_register, __bundle_modules)
-    local function github()
-      print("war3-lua-seed https://github.com/netd777/war3-lua-seed")
-    end
-    
-
-    return github
-    end)
-    __bundle_register("global", function(require, _LOADED, __bundle_register, __bundle_modules)
-    function GlobalHello()
-      print("hello from global context!")
-    end
-    
-
-    return
-    end)
-    __bundle_register("reporter", function(require, _LOADED, __bundle_register, __bundle_modules)
-    local function reporter()
-      print("Ouch!")
-    end
-    
-
-    return reporter
-    end)
-    return __bundle_require("__root")
-      end
-      require = loadBundle()
---__inline_end__
 gg_trg_bundleCheck = nil
 gg_trg_require = nil
 gg_trg_global = nil
 gg_trg_fileNotIncluded = nil
 gg_unit_Edem_0004 = nil
-gg_unit_Obla_0002 = nil
 function InitGlobals()
 end
 
@@ -330,20 +173,7 @@ function config()
 end
 
 
---__inline_hooks__
---__inline_begin__
-mapMain = main
-        main = function()
-          if (loadBundle == nil) then print("ERROR: bundle loader not found!") end
-          if (require == nil) then print("ERROR: require not found!") end
-          if mainPreHook ~= nil then runMapMain = mainPreHook() end
-          if runMapMain ~= false then mapMain() end
-          if mainPostHook ~= nil then mainPostHook() end
-        end
-        mapConfig = config
-        config = function()
-          if configPreHook ~= nil then runMapConfig = configPreHook() end
-          if runMapConfig ~= false then mapConfig() end
-          if configPostHook ~= nil then configPostHook() end
-        end
---__inline_end__
+--!__inline_hooks__
+--!__inline_begin__
+mapMain=main;main=function()if loadBundle==nil then print("ERROR: bundle loader not found!")end;if require==nil then print("ERROR: require not found!")end;if mainPreHook~=nil then runMapMain=mainPreHook()end;if runMapMain~=false then mapMain()end;if mainPostHook~=nil then mainPostHook()end end;mapConfig=config;config=function()if configPreHook~=nil then runMapConfig=configPreHook()end;if runMapConfig~=false then mapConfig()end;if configPostHook~=nil then configPostHook()end end
+--!__inline_end__
