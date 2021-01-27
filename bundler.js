@@ -2,6 +2,7 @@
 
 console.time('bundling');
 
+require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
@@ -18,7 +19,7 @@ console.log(`bundling mode: ${isProduction ? 'release' : 'debug'}`)
 
 let globs;
 try {
-  globs = (!!process.env.BUNDLING_GLOBS) ? JSON.parse(process.env.BUNDLING_GLOBS) : null;
+  globs = (!!process.env.INCLUDE_GLOBS) ? JSON.parse(process.env.INCLUDE_GLOBS) : null;
   if (typeof globs === 'string') {
     globs = [globs];
   }
@@ -26,7 +27,10 @@ try {
 catch (e) {
   globs = null;
 }
-const dirs = (globs || ['src/**/*.lua', 'lib/**/*.lua'])
+if (!globs) {
+  globs = null;
+}
+const dirs = ['src/**/*.lua', 'lib/**/*.lua', 'lua_modules/**/*.lua', ...(globs || [])]
   .map(gl => glob.sync(gl).map(luaFile => path.dirname(luaFile) + '/?.lua'))
   .reduce((prev, curr) => prev.concat(curr), []);
 const paths = Array.from(new Set(dirs));
