@@ -9,8 +9,9 @@ const luabundle = require('luabundle');
 const luamin = require('luamin');
 
 console.log(`bundling started: ${new Date().toLocaleString()}`);
-const isProduction = ((process.env.BUNDLING_ENV || '').trim() == 'release');
-const minifyModules = !!process.env.MINIFY_MODULES;
+const isRelease = ((process.env.BUNDLING_ENV || '').trim() === 'release');
+const isProduction = isRelease || ((process.env.BUNDLING_ENV || '').trim() === 'production');
+const minifyModules = process.env.MINIFY_MODULES === true;
 const minifyBundle = process.env.MINIFY_BUNDLE !== false;
 
 console.log(`bundling mode: ${isProduction ? 'release' : 'debug'}`)
@@ -46,10 +47,10 @@ const mapScriptFile = './map.w3x/war3map.lua';
 const mapScript = fs.readFileSync(mapScriptFile, { encoding: 'utf-8' });
 
 const identifiers = {
-  file: '--!__inline_bundle__',
-  hooks: '--!__inline_hooks__',
-  begin: '--!__inline_begin__',
-  end: '--!__inline_end__',
+  bundle: process.env.IDENTIFIERS_BUNDLE || '--!__inline_bundle__',
+  hooks: process.env.IDENTIFIERS_HOOKS || '--!__inline_hooks__',
+  begin: process.env.IDENTIFIERS_BEGIN || '--!__inline_begin__',
+  end: process.env.IDENTIFIERS_END || '--!__inline_end__',
 };
 
 function prepareScript(script) {
@@ -71,6 +72,14 @@ do {
   const oldScript = clearMapScript.slice(positions.begin.index - 1, positions.end.index + identifiers.end.length);
   clearMapScript = clearMapScript.replace(oldScript, '');
 } while (positions.begin.found && positions.end.found);
+if (isRelease) {
+  clearMapScript = `${positions.bundle.found
+    ? `${identifiers.bundle}\n`
+    : ''}${prepareScript(clearMapScript)
+    }${positions.hooks.found
+      ? `\n${identifiers.hooks}`
+      : ''}`;
+}
 
 const wrappedBundle =
   `${process.env.BUNDLE_WRAP !== false ? 'function loadBundle()' : ''}
@@ -78,17 +87,16 @@ const wrappedBundle =
   ${process.env.BUNDLE_WRAP !== false ? 'end' : ''}
   ${process.env.BUNDLE_REQUIRE !== false ? 'require = loadBundle()' : ''}`;
 const preparedScript =
-  `${identifiers.file}\n${identifiers.begin}\n${(minifyBundle && isProduction)
+  `${identifiers.bundle}\n${identifiers.begin}\n${(minifyBundle && isProduction)
     ? prepareScript(wrappedBundle)
     : wrappedBundle
   }\n${identifiers.end}`;
-const bundledMapScript = positions.file.found
-  ? clearMapScript.replace(identifiers.file, preparedScript)
+const bundledMapScript = positions.bundle.found
+  ? clearMapScript.replace(identifiers.bundle, preparedScript)
   : `${preparedScript}\n${clearMapScript}`;
 
 
 let finalMapScript = bundledMapScript;
-// todo: use Lua Initialization? https://www.hiveworkshop.com/threads/lua-global-initialization.317099/
 if (process.env.HOOKS_ALL !== false) {
   const hooksScript =
     `mapMain = main
@@ -112,9 +120,7 @@ if (process.env.HOOKS_ALL !== false) {
     : `${bundledMapScript}\n${preparedHooksScript}`;
   finalMapScript = hookedMapScript;
 }
-if (process.env.MINIFY_MAP_SOURCE === true) {
-  finalMapScript = prepareScript(finalMapScript);
-}
+
 
 fs.writeFileSync(mapScriptFile, finalMapScript, { encoding: 'utf-8' });
 

@@ -11,7 +11,7 @@ A Wc3 map project template using Lua scripting language that allows code splitti
 * Bundling and code splitting
 (via [Luabundle](https://github.com/Benjamin-Dobell/luabundle))
 * File watcher (via [nodemon](https://github.com/remy/nodemon))
-* Bundle contents of the `src/` (and `lib/` for external libraries like ) folder and inject them in the `map.w3x/war3map.lua` file
+* Bundle contents of the `src/` (and `lib/` for external libraries like [damage-engine.lua](https://github.com/BribeFromTheHive/DamageEngine/blob/master/script.lua)) folder and inject them in the `map.w3x/war3map.lua` file
   * Thus enabling editing the map using the World Editor whilist editing lua with code editors like  [VSCode](https://code.visualstudio.com) without having to neither copy/paste code in the editor nor create a clone project
   * See [Caveats](#caveats)
 * Code minification using [Luamin](https://www.npmjs.com/package/luamin)
