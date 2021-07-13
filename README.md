@@ -19,7 +19,7 @@ A Wc3 map project template using Lua scripting language that allows code splitti
 
 ## Installation
 * Install [Node.js](https://nodejs.org/en/download/)
-* Clone or download this repository, or click `Use Template`
+* Clone or download this repository, or click [https://github.com/rodolfoThePig/war3-lua-seed/generate](Use Template)
 * run `npm install` inside the directory
 * Put your map in `map.w3x/` directory (already comes with an example map)
 
@@ -43,16 +43,15 @@ A Wc3 map project template using Lua scripting language that allows code splitti
 ## Enhancements to consider:
 * Map source backup option
 * Use lua [Global Initialization](https://www.hiveworkshop.com/threads/lua-global-initialization.317099/) instead of hooks
-* `.env` or equivalent
-* Fix TestMap caveat
+* ~~`.env` or equivalent~~
+* Fix TestMap TempFolder caveat
 * Make it easier to include external Lua libraries
   * [LuaRocks](https://luarocks.org)
   * [lua-loader](https://www.npmjs.com/package/lua-loader)
 * [Typescript to Lua](https://www.npmjs.com/package/typescript-to-lua)
-* [Moonscript](https://moonscript.org) (luarocks?)
 * Make into npm package
-* Create `release` mode that minifies the map completely (smaller), but that is "destructive", and should either instead create a new file in a `/dist` folder,create a backup file or just warn prior to compilation
-
+* Make into npm package
+* ~~Create `release` mode that minifies the map completely (smaller) but is irreversible, and should instead create a new file in a `/dist` folder or create a backup file~~
 
 ----
 ## License
