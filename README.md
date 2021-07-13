@@ -1,6 +1,6 @@
 # 🌑 Warcraft 3 Map Project Seed With Lua
 
-A Wc3 map project template using Lua scripting language that allows code splitting and editing code while the World Editor is open.
+A Warcraft 3 map project template using Lua scripting language that allows code splitting and editing code while the World Editor is open. Powered by [https://nodejs.org](Node.js)
 
 * [Features](#features)
 * [Installation](#Installation)
@@ -15,10 +15,10 @@ A Wc3 map project template using Lua scripting language that allows code splitti
   * Thus enabling editing the map using the World Editor whilist editing lua with code editors like  [VSCode](https://code.visualstudio.com) without having to neither copy/paste code in the editor nor create a clone project
   * See [Caveats](#caveats)
 * Code minification using [Luamin](https://www.npmjs.com/package/luamin)
-* File final bundle size check (max: 100KB)
+* Bundle file size check (warning if > 100KB)
 
 ## Installation
-* Install [Node.js](https://nodejs.org/en/download/)
+* Install [Node.js](https://nodejs.org#download)
 * Clone or download this repository, or click [https://github.com/rodolfoThePig/war3-lua-seed/generate](Use Template)
 * run `npm install` inside the directory
 * Put your map in `map.w3x/` directory (already comes with an example map)
