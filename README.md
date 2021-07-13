@@ -1,6 +1,6 @@
 # 🌑 Warcraft 3 Map Project Seed With Lua
 
-A Warcraft 3 map project template using Lua scripting language that allows code splitting and editing code while the World Editor is open. Powered by [https://nodejs.org](Node.js)
+A Warcraft 3 map project template using Lua scripting language that allows code splitting and editing code while the World Editor is open. Powered by [Node.js](https://nodejs.org).
 
 * [Features](#features)
 * [Installation](#Installation)
@@ -18,7 +18,7 @@ A Warcraft 3 map project template using Lua scripting language that allows code 
 * Bundle file size check (warning if > 100KB)
 
 ## Installation
-* Install [Node.js](https://nodejs.org#download)
+* [Install Node.js](https://nodejs.org#download)
 * Clone or download this repository, or click [https://github.com/rodolfoThePig/war3-lua-seed/generate](Use Template)
 * run `npm install` inside the directory
 * Put your map in `map.w3x/` directory (already comes with an example map)
