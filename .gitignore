@@ -1,3 +1,5 @@
 /node_modules
 /lua_modules
+/prod.w3x/
+/release.w3x/
 .env

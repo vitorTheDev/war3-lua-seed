@@ -1,6 +1,6 @@
 {
   "name": "wc3-lua-seed",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Warcraft 3 + lua scripting map seed",
   "main": "bundler.js",
   "scripts": {
@@ -19,7 +19,8 @@
     "dotenv": "^8.2.0",
     "glob": "^7.1.6",
     "luabundle": "^1.6.0",
-    "luamin": "^1.0.4"
+    "luamin": "^1.0.4",
+    "ncp": "^2.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"
