@@ -73,11 +73,11 @@ do {
     .map(([key, identifier]) => ({ key, identifier, index: clearMapScript.indexOf(identifier) }))
     .map(identifierObj => ({
       ...identifierObj,
-      found: (!isNaN(identifierObj.index)) && identifierObj.index !== -1,
+      found: (!isNaN(identifierObj.index)) && (identifierObj.index !== -1),
     }))
     .reduce((prev, curr) => ({ ...prev, [curr.key]: curr, }), {});
   const oldScript = clearMapScript.slice(positions.begin.index - 1, positions.end.index + identifiers.end.length);
-  clearMapScript = clearMapScript.replace(oldScript, '');
+  clearMapScript = clearMapScript.replace(oldScript, '').replace(new RegExp(identifiers.bundle, 'g'), '').replace(new RegExp(identifiers.hooks, 'g'), '');
 } while (positions.begin.found && positions.end.found);
 
 const bundledModules = clearMapScript;
@@ -100,12 +100,12 @@ const wrappedBundle =
   ${process.env.BUNDLE_WRAP !== false ? 'end' : ''}
   ${process.env.BUNDLE_REQUIRE !== false ? 'require = loadBundle()' : ''} `;
 const preparedScript =
-  `${identifiers.bundle} \n${identifiers.begin} \n${prepareModules(wrappedBundle)} \n${identifiers.end} `;
+  `${identifiers.bundle}\n${identifiers.begin}\n${prepareModules(wrappedBundle)}\n${identifiers.end} `;
 const bundledMapScript = positions.bundle.found
   ? clearMapScript.replace(identifiers.bundle, preparedScript)
-  : `${preparedScript} \n${clearMapScript} `;
+  : `${preparedScript}\n${clearMapScript} `;
 
-let finalMapScript = bundledMapScript;
+let finalMapScript = bundledMapScript.replace(new RegExp(identifiers.bundle, 'g'), '');
 if (process.env.HOOKS_ALL !== false) {
   const hooksScript =
     `  mapMain = main
@@ -123,10 +123,10 @@ if (process.env.HOOKS_ALL !== false) {
   ${process.env.HOOKS_POST_CONFIG !== false ? 'if configPostHook ~= nil then configPostHook() end' : ''}
   end`;
   const preparedHooksScript =
-    `${identifiers.hooks} \n${identifiers.begin} \n${prepareModules(hooksScript)} \n${identifiers.end} `;
+    `${identifiers.hooks}\n${identifiers.begin}\n${prepareModules(hooksScript)}\n${identifiers.end} `;
   const hookedMapScript = (positions.hooks.found)
     ? bundledMapScript.replace(identifiers.hooks, preparedHooksScript)
-    : `${bundledMapScript} \n${preparedHooksScript} `;
+    : `${bundledMapScript}\n${preparedHooksScript} `;
   finalMapScript = prepareBundle(hookedMapScript);
 }
 

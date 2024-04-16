@@ -4,11 +4,12 @@
   "description": "Warcraft 3 + lua scripting map seed",
   "main": "bundler.js",
   "scripts": {
-    "start": "npm run watch",
+    "start": "npx run-p watch watch-re",
     "bundle": "node bundler.js",
     "bundle.prod": "set BUNDLING_ENV=production && npm run bundle",
     "bundle.release": "set BUNDLING_ENV=release && npm run bundle",
-    "watch": "nodemon nodemon.json",
+    "watch": "npx nodemon nodemon.json",
+    "watch-re": "npx nodemon nodemon-re.json",
     "watch.prod": "set BUNDLING_ENV=production && npm run watch",
     "watch.release": "set BUNDLING_ENV=release && npm run watch"
   },
@@ -23,6 +24,7 @@
     "ncp": "^2.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "npm-run-all": "^4.1.5"
   }
 }

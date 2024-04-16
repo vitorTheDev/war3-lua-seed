@@ -3,17 +3,16 @@
   "ignore": [
     ".git",
     "dist/**/*",
-    "node_modules/**/*",
-    "map.w3x/**/*.lua"
+    "node_modules/**/*"
   ],
   "verbose": false,
   "watch": [
-    "src/**/*.lua"
+    "map.w3x/**/*.lua"
   ],
   "env": {
     "NODE_ENV": "development"
   },
-  "delay": 1000,
+  "delay": 1750,
   "exec": "npm run bundle",
   "ext": "lua"
 }
