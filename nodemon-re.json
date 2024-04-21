@@ -13,6 +13,6 @@
     "NODE_ENV": "development"
   },
   "delay": 1750,
-  "exec": "npm run bundle",
+  "exec": "node bundler-re.js",
   "ext": "lua"
 }

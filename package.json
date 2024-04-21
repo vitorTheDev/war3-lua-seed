@@ -8,8 +8,8 @@
     "bundle": "node bundler.js",
     "bundle.prod": "set BUNDLING_ENV=production && npm run bundle",
     "bundle.release": "set BUNDLING_ENV=release && npm run bundle",
-    "watch": "npx nodemon nodemon.json",
-    "watch-re": "npx nodemon nodemon-re.json",
+    "watch": "npx nodemon --config nodemon.json",
+    "watch-re": "npx nodemon --config nodemon-re.json",
     "watch.prod": "set BUNDLING_ENV=production && npm run watch",
     "watch.release": "set BUNDLING_ENV=release && npm run watch"
   },
